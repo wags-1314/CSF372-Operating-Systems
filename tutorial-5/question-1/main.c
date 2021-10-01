@@ -23,21 +23,21 @@ int main() {
     if (pid > 0) {
         /* Parent Process: Sender */
         write(to[1], buffer, 256);
-        printf("[%d->%d] Sending: %s\n", getpid(), pid, buffer);
+        printf("[%d->%d] Sending: %s", getpid(), pid, buffer);
         wait(NULL);
         read(from[0], buffer, 256);
-        printf("[%d->%d] Recieved: %s\n", pid, getpid(), buffer);
+        printf("[%d->%d] Recieved: %s", pid, getpid(), buffer);
     } else {
         /* Child Process: Reciever */
         read(to[0], buffer, 256);
-        printf("[%d->%d] Recieved: %s\n", getppid(), getpid(), buffer);
+        printf("[%d->%d] Recieved: %s", getppid(), getpid(), buffer);
         for(int i = 0; buffer[i] != 0; i++) {
             if(isalpha(buffer[i])) {
                 buffer[i] ^= 32;
             }
         }
         write(from[1], buffer, 256);
-        printf("[%d->%d] Flipping: %s\n", getpid(), getppid(), buffer);
+        printf("[%d->%d] Flipping: %s", getpid(), getppid(), buffer);
 
     }
     return 0;
