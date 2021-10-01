@@ -29,9 +29,9 @@ int main(int argc, char* argv[]) {
     struct message temp_data;
     while(running) {
         msgrcv(dataq_id, (void *)&temp_data, MAX_MSG_SIZE, 1, 0);
-        printf("[%d] Received: %s", getpid(), temp_data.data);
+        // printf("[%d] Received: %s", getpid(), temp_data.data);
         msgsnd(echoq_id, (void *)&temp_data, MAX_MSG_SIZE, 0);
-        printf("[%d] Sent: %s\n", getpid(), temp_data.data);
+        // printf("[%d] Sent: %s\n", getpid(), temp_data.data);
         if(strncmp(temp_data.data, "end", 3) == 0) {
             running = false;
         }
