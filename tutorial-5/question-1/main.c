@@ -22,6 +22,8 @@ int main() {
 
     if (pid > 0) {
         /* Parent Process: Sender */
+        close(to[0]);
+        close(from[1]);
         write(to[1], buffer, 256);
         printf("[%d->%d] Sending: %s", getpid(), pid, buffer);
         wait(NULL);
@@ -29,15 +31,17 @@ int main() {
         printf("[%d->%d] Recieved: %s", pid, getpid(), buffer);
     } else {
         /* Child Process: Reciever */
+        close(to[1]);
+        close(from[0]);
         read(to[0], buffer, 256);
-        printf("[%d->%d] Recieved: %s", getppid(), getpid(), buffer);
+        // printf("[%d->%d] Recieved: %s", getppid(), getpid(), buffer);
         for(int i = 0; buffer[i] != 0; i++) {
             if(isalpha(buffer[i])) {
                 buffer[i] ^= 32;
             }
         }
         write(from[1], buffer, 256);
-        printf("[%d->%d] Flipping: %s", getpid(), getppid(), buffer);
+        // printf("[%d->%d] Flipping: %s", getpid(), getppid(), buffer);
 
     }
     return 0;
