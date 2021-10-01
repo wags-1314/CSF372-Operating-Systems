@@ -49,6 +49,8 @@ int main(int argc, char *argv[]) {
         wait(NULL);
         void *shm_ptr = shmat(shmid, NULL, 0);
         printf("[%d] Collatz sequence for %d: %s\n", getpid(), number, (char *)shm_ptr);
+        shmdt(shm_ptr);
+        shmctl(shmid, IPC_RMID, NULL);
     } else {
         void *shm_ptr = shmat(shmid, NULL, 0);
         
@@ -71,6 +73,7 @@ int main(int argc, char *argv[]) {
         } while(numb != 1);
 
         printf("[%d] Done calculating Collatz sequence for %d\n", getpid(), number);
+        shmdt(shm_ptr);
     }
     return 0;
 } 

@@ -3,6 +3,7 @@
 #include<sys/types.h>
 #include<sys/wait.h>
 #include<stdlib.h>
+#include<ctype.h>
 
 int main() {
     int to[2], from[2], n;
@@ -14,19 +15,30 @@ int main() {
         printf("[Error] Unable to create a pipe.\n");
         exit(1);
     }
-
+    
+    printf("[%d] Enter String: ", getpid());
+    fgets(buffer, 256, stdin);
     pid_t pid = fork();
 
     if (pid > 0) {
         /* Parent Process: Sender */
-        fgets(buffer, 256, stdin);
         write(to[1], buffer, 256);
-        printf("[%d] Sending \"%s\" to %d", getpid(), buffer, pid);
+        printf("[%d->%d] Sending: %s\n", getpid(), pid, buffer);
         wait(NULL);
+        read(from[0], buffer, 256);
+        printf("[%d->%d] Recieved: %s\n", pid, getpid(), buffer);
     } else {
         /* Child Process: Reciever */
         read(to[0], buffer, 256);
-        printf("[%d] Recieved \"%s\" from %d", getpid(), buffer, getppid());
+        printf("[%d->%d] Recieved: %s\n", getppid(), getpid(), buffer);
+        for(int i = 0; buffer[i] != 0; i++) {
+            if(isalpha(buffer[i])) {
+                buffer[i] ^= 32;
+            }
+        }
+        write(from[1], buffer, 256);
+        printf("[%d->%d] Flipping: %s\n", getpid(), getppid(), buffer);
+
     }
     return 0;
 }
