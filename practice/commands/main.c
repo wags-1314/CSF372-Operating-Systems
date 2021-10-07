@@ -14,7 +14,7 @@ int main() {
         wait(NULL);
         FILE* fin = fopen("commands.txt", "r");
         fgets(buffer, 1024, fin);
-        execlp(buffer, NULL);
+        execl("/bin/bash", buffer, NULL);
     }
     else if (pid == 0) {
         FILE* fin = fopen("commands.txt", "r");
@@ -22,6 +22,6 @@ int main() {
         while (!feof(fin)) {
             fgets(buffer, 1024, fin);
         }
-        execlp(buffer, NULL);
+        execl("/bin/bash", buffer, NULL);
     }
 }
