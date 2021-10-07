@@ -1,0 +1,6 @@
+pwd
+ifconfig -s
+lscpu
+cp
+ps
+ls -l
