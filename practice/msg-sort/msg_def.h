@@ -1,7 +1,7 @@
 #ifndef MSG_DEFS_H
 #define MSG_DEFS_H
 
-#define MSGQ_ID 4200
+#define MSGQ_ID 4222
 #define N 20
 
 struct message {

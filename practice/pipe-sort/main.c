@@ -23,7 +23,6 @@ int main() {
 
     if (pid > 0) {
         /* Parent Process: Sender */
-        wait(NULL);
         int num;
         close(fd[1]);
         for(int i = 0; i < N; i++) {
